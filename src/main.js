@@ -6,6 +6,12 @@ import router from './router'
 import '@/public/iviewComponents'
 import store from '@/store'
 
+import { Cascader,Table ,
+    TableColumn,Button,  Checkbox } from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(Cascader).use(Table).use(TableColumn).use(Button).use(Checkbox);
+
 import '@/styles/index.less'
 
 Vue.config.productionTip = false

@@ -42,9 +42,9 @@
                         </Col>
                     </Row>
                 </FormItem>
-                <FormItem  label="请假时间" prop="leaveTime">
+                <FormItem label="请假时间" prop="leaveTime">
                     <DatePicker
-                    style="width:100%;"
+                        style="width:100%;"
                         type="datetimerange"
                         v-model="applyLeave.leaveTime"
                         format="yyyy-MM-dd HH:mm"
@@ -54,7 +54,7 @@
                 <FormItem label="请假天数" prop="days">
                     <Input v-model="applyLeave.days" placeholder="请填写请假天数"></Input>
                 </FormItem>
-                
+
                 <FormItem label="请假理由" prop="reason">
                     <Input
                         v-model="applyLeave.reason"
@@ -75,8 +75,10 @@
 <script>
     import { addApplyLeave } from "api";
     import { transformTime } from "@/public/tools";
+    import { mapMutations } from "vuex";
     export default {
         name: "payRise",
+        inject: ["reload"],
         props: {
             model: {
                 type: Object,
@@ -136,13 +138,13 @@
                                 0: {
                                     required: true,
                                     type: "date",
-                                    message: "请选择全天/时间范围",
+                                    message: "请选择请假日期",
                                     trigger: "change"
                                 },
                                 1: {
                                     required: true,
                                     type: "date",
-                                    message: "请选择全天/时间范围",
+                                    message: "请选择请假日期",
                                     trigger: "change"
                                 }
                             }
@@ -160,6 +162,7 @@
             };
         },
         methods: {
+            ...mapMutations(["setCountList"]),
             handleUploadProve(file) {
                 this.proveName = file.name;
                 this.applyLeave.proveFile = file;
@@ -189,7 +192,9 @@
                         addApplyLeave(param).then(res => {
                             console.log(res);
                             if (res.success) {
-                                this.model.isApplyLeave = false;
+                                // this.model.isApplyLeave = false;
+                                this.setCountList();
+                                this.reload();
                                 this.$Message.success("提交成功");
                             } else {
                                 this.$Message.error("提交失败");

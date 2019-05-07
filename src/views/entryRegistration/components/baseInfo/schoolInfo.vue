@@ -1,4 +1,5 @@
 <template>
+<div>
     <Form ref="schoolInfo" :model="schoolInfo">
         <FormItem v-for="(item, index) in schoolInfo.items" v-if="item.status" :key="index">
             <Row :gutter="16">
@@ -68,7 +69,13 @@
                                 </Upload>
                             </Col>
                             <Col :span="14">
-                                <Input  disabled type="text" v-model="item.idPhotoName"></Input>
+                                <Input  disabled type="text" v-model="item.idPhotoName">
+                                     <Icon
+                                type="ios-eye-outline"
+                                slot="suffix"
+                                @click.native="handleView(item.idPhotoUrl,index)"
+                            ></Icon>
+                                </Input>
                             </Col>
                         </Row>
                     </FormItem>
@@ -87,6 +94,10 @@
             </Row>
         </FormItem>
     </Form>
+     <Modal title="View Image" v-model="isIdPhotoModal">
+            <img :src="ipPhotoPic" v-if="isIdPhotoModal" style="width: 100%">
+        </Modal>
+        </div>
 </template>
 
 <script>
@@ -103,6 +114,8 @@
         },
         data() {
             return {
+                isIdPhotoModal:false,
+                ipPhotoPic:'',
                 schoolIndex: 1,
                 uploadIndex: 1,
                 eductionList: [
@@ -119,6 +132,10 @@
             };
         },
         methods: {
+            handleView(url,index){
+                this.isIdPhotoModal = true;
+                this.ipPhotoPic = url?url:this.schoolInfo.items[index].idPhotoName;
+            },
             handleSchoolAdd() {
                 this.schoolIndex++;
                 this.schoolInfo.items.push({
@@ -141,6 +158,7 @@
             },
             handleUpload(file) {
                 console.log(file);
+                 let that = this;
                 console.log("uploadIndex", this.uploadIndex);
                 this.schoolInfo.items[this.uploadIndex].idPhotoFile = file;
                 this.$set(
@@ -148,6 +166,17 @@
                     "idPhotoName",
                     file.name
                 );
+                
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = e => {
+                    that.$set(
+                    that.schoolInfo.items[that.uploadIndex],
+                    "idPhotoUrl",
+                    reader.result
+                );
+                };
+                
                 console.log("items", this.schoolInfo.items);
                 return false;
             },

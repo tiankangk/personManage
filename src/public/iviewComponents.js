@@ -33,10 +33,12 @@ import {
     Tag,
     Divider,
     Row,
-    Col
+    Col,
+    Badge
 } from 'iview'
 import 'iview/dist/styles/iview.css';
 
+Vue.component('Badge', Badge);
 Vue.component('Col', Col);
 Vue.component('Row', Row);
 Vue.component('Divider', Divider);
@@ -75,7 +77,6 @@ Vue.prototype.$Message = Message;
 Vue.prototype.$Modal = Modal;
 
 
-import { Cascader } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.use(Cascader);
+
+

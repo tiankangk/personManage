@@ -49,8 +49,10 @@
 <script>
     import { addPayRise } from "api";
     import { transformTime } from "@/public/tools";
+    import {mapMutations} from 'vuex'
     export default {
         name: "payRise",
+         inject:['reload'],
         props: {
             model: {
                 type: Object,
@@ -75,7 +77,7 @@
                     money: [
                         {
                             required: true,
-                            message: "请填写晋升工资",
+                            message: "请填写加薪数额",
                             trigger: "blur"
                         }
                     ],
@@ -83,7 +85,7 @@
                         {
                             required: true,
                             type: "date",
-                            message: "请选择晋升日期",
+                            message: "请选择加薪日期",
                             trigger: "change"
                         }
                     ],
@@ -91,7 +93,7 @@
                     reason: [
                         {
                             required: true,
-                            message: "请填写晋升理由",
+                            message: "请填写加薪理由",
                             trigger: "blur"
                         }
                     ]
@@ -99,6 +101,7 @@
             };
         },
         methods: {
+              ...mapMutations(['setCountList']),
             computeMoney(){
                 this.payRise.precent = (Number(this.payRise.money)/Number(this.chooseVal.wageCrrection)*100).toFixed(2);
                 this.payRise.totalWage =  Number(this.payRise.money) +  Number(this.chooseVal.realWage);
@@ -117,7 +120,9 @@
                         }).then(res => {
                             console.log(res);
                             if (res.success) {
-                                this.model.isPayRise = false;
+                                // this.model.isPayRise = false;
+                                  this.setCountList();
+                                this.reload();
                                 this.$Message.success("提交成功");
                             } else {
                                 this.$Message.error("提交失败");

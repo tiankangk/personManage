@@ -53,8 +53,10 @@
 <script>
     import { addEmployeeUpInfo } from "api";
     import { transformTime } from "@/public/tools";
+    import {mapMutations} from 'vuex'
     export default {
         name: "employeeUp",
+        inject:['reload'],
         props: {
             model: {
                 type: Object,
@@ -111,6 +113,7 @@
             };
         },
         methods: {
+              ...mapMutations(['setCountList']),
             handelSubmit(name) {
                 console.log(transformTime(this.employeeUpList.riseTime));
 
@@ -126,7 +129,9 @@
                         }).then(res => {
                             console.log(res);
                             if (res.success) {
-                                this.model.isEmployeeUp = false;
+                                  this.reload();
+                                // this.model.isEmployeeUp = false;
+                                       this.setCountList();
                                 this.$Message.success("提交成功");
                             } else {
                                 this.$Message.error("提交失败");

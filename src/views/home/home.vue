@@ -30,7 +30,8 @@
                                 :name="child.name"
                                 v-if="child.meta.isHide"
                                 :to="item.path+(item.path=='/'?'':'/')+child.path"
-                            >{{child.meta.title}}</MenuItem>
+                                style="display:flex;justify-content:space-between;"
+                            >{{child.meta.title}}<Badge v-if="child.name in getCountList" :count="getCountList[child.name]" :show-zero="true" overflow-count="99"> </Badge></MenuItem>
                         </Submenu>
                     </Menu>
                 </Sider>
@@ -51,7 +52,7 @@
                                 :name="child.name"
                                 v-if="child.meta.isHide"
                                 @click.native="jump(item.path+(item.path=='/'?'':'/')+child.path)"
-                            >{{child.meta.title}}</DropdownItem>
+                            >{{child.meta.title}}<Badge style="margin-left:10px;" v-if="child.name in getCountList" :count="getCountList[child.name]" :show-zero="true" overflow-count="99"> </Badge></DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -91,7 +92,7 @@
     </div>
 </template>
 <script>
-    import { mapGetters } from "vuex";
+    import { mapGetters,mapMutations } from "vuex";
     import changePassword from "./components/changePassword";
     import tagsNav from './components/tagsNav.vue'
     export default {
@@ -115,7 +116,7 @@
             };
         },
         computed: {
-            ...mapGetters(["getMenuList", "getUsername"]),
+            ...mapGetters(["getMenuList", "getUsername","getCountList"]),
             rotateIcon() {
                 return ["menu-icon", this.isCollapsed ? "rotate-icon" : ""];
             }
@@ -131,6 +132,7 @@
             }
         },
         methods: {
+            ...mapMutations(['setCountList']),
             reload() {
                 this.isRouterAlive = false;
                 this.$nextTick(() => {
@@ -157,6 +159,7 @@
         mounted() {
             console.log("route", this.$route);
             console.log("getMenuList", this.getMenuList);
+            this.setCountList();
         }
     };
 </script>

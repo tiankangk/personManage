@@ -9,24 +9,27 @@
                         <Icon type="ios-arrow-down"></Icon>
                     </Button>
                     <DropdownMenu slot="list">
-                        <DropdownItem name="employeeUp">员工晋升</DropdownItem>
-                         <DropdownItem name="payRise">员工加薪</DropdownItem>
-                          <DropdownItem name="applyLeave">请假申请</DropdownItem>
+                        <DropdownItem name="isEmployeeUp">员工晋升</DropdownItem>
+                        <DropdownItem name="isPayRise">员工加薪</DropdownItem>
+                        <DropdownItem name="isApplyLeave">请假申请</DropdownItem>
+                        <DropdownItem name="isTurnFormal">转正申请申请</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>
         </Card>
         <public-table class="puclic-table" :tableList="tableList" @changePage="changePage"></public-table>
         <!-- 编辑人事管理 -->
-        <add-person-model :model="model" :allEntryInfo="allEntryInfo"></add-person-model>
+        <add-person-model :model="model" :chooseVal="chooseVal" :allEntryInfo="allEntryInfo"></add-person-model>
         <!-- 预览证件照片 -->
         <preview-pic :previewPicList="previewPicList" :model="model"></preview-pic>
         <!-- 晋升的弹框 -->
-        <employee-up :model="model" :chooseVal = "chooseVal"></employee-up>
+        <employee-up :model="model" :chooseVal="chooseVal"></employee-up>
         <!-- 加薪的弹框 -->
-        <pay-rise :model="model" :chooseVal = "chooseVal"></pay-rise>
+        <pay-rise :model="model" :chooseVal="chooseVal"></pay-rise>
         <!-- 请假申请弹框 -->
-        <apply-leave :model="model" :chooseVal = "chooseVal"></apply-leave>
+        <apply-leave :model="model" :chooseVal="chooseVal"></apply-leave>
+        <!-- 转正申请弹框 -->
+        <turn-formal :model="model" :chooseVal="chooseVal"></turn-formal>
     </div>
 </template>
 
@@ -35,10 +38,11 @@
     import publicTable from "components/publicTable";
     import addPersonModel from "./components/addPersonModel";
     import previewPic from "./components/previewPic";
-    import employeeUp from "./components/employeeUp"
-    import applyLeave from "./components/applyLeave"
-    
-      import payRise from "./components/payRise"
+    import employeeUp from "./components/employeeUp";
+    import applyLeave from "./components/applyLeave";
+    import turnFormal from "./components/turnFormal";
+
+    import payRise from "./components/payRise";
     import { transformTime } from "@/public/tools";
     import {
         getEntryRegistrationInfo,
@@ -54,19 +58,21 @@
             previewPic,
             employeeUp,
             payRise,
-            applyLeave
+            applyLeave,
+            turnFormal
         },
         data() {
             return {
                 // 浏览证件照的数组
                 previewPicList: [],
-                chooseVal:{},
+                chooseVal: {},
                 model: {
                     isModel: false,
                     isPreviewPic: false,
-                    isEmployeeUp:false,
-                    isPayRise:false,
-                    isApplyLeave:false
+                    isEmployeeUp: false,
+                    isPayRise: false,
+                    isApplyLeave: false,
+                    isTurnFormal: false
                 },
                 searchList: {
                     username: {
@@ -302,17 +308,19 @@
         methods: {
             // 日常管理
             chooseDailyManage(val) {
-                if(Object.keys(this.chooseVal).length === 0 ){
-                      this.$Message.warning("请选择员工");
-                }else {
-                    if(val === 'employeeUp'){
-                        this.model.isEmployeeUp = true;
-                    } else if(val ==='payRise'){
-                          this.model.isPayRise = true;
-                    }else if(val ==='applyLeave'){
-                          this.model.isApplyLeave = true;
-                    }
-                    
+                if (Object.keys(this.chooseVal).length === 0) {
+                    this.$Message.warning("请选择员工");
+                } else {
+                    this.model[val] = true;
+                    // if (val === "employeeUp") {
+                    //     this.model.isEmployeeUp = true;
+                    // } else if (val === "payRise") {
+                    //     this.model.isPayRise = true;
+                    // } else if (val === "applyLeave") {
+                    //     this.model.isApplyLeave = true;
+                    // } else if (val === "trunFormal") {
+                    //     this.model.isTurnFormal = true;
+                    // }
                 }
                 console.log(val);
             },
@@ -344,6 +352,8 @@
             // 点击分页
             changePage(page) {
                 console.log(page);
+                this.tableList.index = page;
+                this.initData();
             },
             // 弹出入职登记模态框
             dropEntryModel() {

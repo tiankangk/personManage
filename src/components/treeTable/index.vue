@@ -56,7 +56,7 @@
             </template>
         </el-table-column>
 
-        <el-table-column label="状态" >
+        <el-table-column label="标注状态" >
             <template slot-scope="scope">
                 <el-button
                     size="mini"

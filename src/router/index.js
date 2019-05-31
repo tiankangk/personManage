@@ -57,7 +57,7 @@ const router = new Router({
                         title: '晋升审核',
                         isHide: true
                     },
-                    component: () => import('views/employeeUpAudit/employeeUpAudit')
+                    component: () => import('views/auditManage/employeeUpAudit/employeeUpAudit')
                 },
                 {
                     path: 'payRiseAudit',
@@ -66,7 +66,7 @@ const router = new Router({
                         title: '加薪审核',
                         isHide: true
                     },
-                    component: () => import('views/payRiseAudit/payRiseAudit')
+                    component: () => import('views/auditManage/payRiseAudit/payRiseAudit')
                 },
                 {
                     path: 'applyLeaveAudit',
@@ -75,7 +75,7 @@ const router = new Router({
                         title: '请假审核',
                         isHide: true
                     },
-                    component: () => import('views/applyLeaveAudit/applyLeaveAudit')
+                    component: () => import('views/auditManage/applyLeaveAudit/applyLeaveAudit')
                 },
                 {
                     path: 'turnFormalAudit',
@@ -84,7 +84,7 @@ const router = new Router({
                         title: '转正审核',
                         isHide: true
                     },
-                    component: () => import('views/turnFormalAudit/turnFormalAudit')
+                    component: () => import('views/auditManage/turnFormalAudit/turnFormalAudit')
                 },
 
                 {
@@ -94,9 +94,38 @@ const router = new Router({
                         title: '销假管理',
                         isHide: true
                     },
-                    component: () => import('views/sellingOff/sellingOff')
+                    component: () => import('views/auditManage/sellingOff/sellingOff')
                 }
 
+            ]
+        },
+        {
+            path: '/assetManage',
+            name: 'assetManage',
+            meta: {
+                title: '资产管理',
+                icon: 'ios-clipboard-outline'
+            },
+            component: Home,
+            children: [
+                {
+                    path: 'assetInfoManage',
+                    name: 'assetInfoManage',
+                    meta: {
+                        title: '资产信息管理',
+                        isHide: true
+                    },
+                    component: () => import('views/assetManage/assetInfoManage/assetInfoManage')
+                },
+                {
+                    path: 'classifyManage',
+                    name: 'classifyManage',
+                    meta: {
+                        title: '资产分类管理',
+                        isHide: true
+                    },
+                    component: () => import('views/assetManage/classifyManage/classifyManage')
+                }
             ]
         },
         {

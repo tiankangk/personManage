@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Table class="public-table" border :columns="tableList.titleList" :data="tableList.contentList"></Table>
+        <Table :loading="loading" class="public-table" border :columns="tableList.titleList" :data="tableList.contentList"></Table>
          <Page @on-change="changePage" :total="tableList.total" :page-size="tableList.pageSize?tableList.pageSize:10" :current="tableList.index" show-elevator show-total />
     </div>
 </template>
@@ -12,6 +12,9 @@
             tableList:{
                 type:Object,
                 required:true
+            },
+            loading:{
+                type:Boolean
             }
         },
         data() {

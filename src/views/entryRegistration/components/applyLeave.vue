@@ -5,7 +5,7 @@
                 <FormItem label="申请人">
                     <Input :value="chooseVal.username" disabled></Input>
                 </FormItem>
-                <FormItem label="所在部门" prop="part">
+                <!-- <FormItem label="所在部门" prop="part">
                     <Select v-model="applyLeave.part">
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai">London</Option>
@@ -18,12 +18,10 @@
                         <Option value="shanghai">London</Option>
                         <Option value="shenzhen">Sydney</Option>
                     </Select>
-                </FormItem>
+                </FormItem> -->
                 <FormItem label="请假类型" prop="type">
                     <Select v-model="applyLeave.type">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai">London</Option>
-                        <Option value="shenzhen">Sydney</Option>
+                        <Option v-for="(value,ind) in leaveType" :key="ind" :value="value">{{value}}</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
@@ -60,7 +58,7 @@
                         v-model="applyLeave.reason"
                         type="textarea"
                         :autosize="{minRows: 2,maxRows: 5}"
-                        placeholder="请填写晋升理由"
+                        placeholder="请填写请假理由"
                     ></Input>
                 </FormItem>
             </Form>
@@ -92,30 +90,61 @@
         data() {
             return {
                 proveName: "",
+                leaveType:['病假','事假','婚假','丧假','产假','年休假','其他'
+                    // {
+                    //     value:1,
+                    //     label:'病假'
+                    // },
+                    // {
+                    //     value:2,
+                    //     label:'事假'
+                    // },
+                    // {
+                    //     value:3,
+                    //     label:'婚假'
+                    // },
+                    // {
+                    //     value:4,
+                    //     label:'丧假'
+                    // },
+                    // {
+                    //     value:5,
+                    //     label:'产假'
+                    // },
+                    // {
+                    //     value:6,
+                    //     label:'年休假'
+                    // },
+                    // {
+                    //     value:7,
+                    //     label:'其他'
+                    // }
+                    
+                ],
                 applyLeave: {
                     proveFile: {},
-                    part: "",
-                    post: "",
+                    // part: "",
+                    // post: "",
                     type: 0,
                     days: "",
                     reason: "",
                     leaveTime: []
                 },
                 ruleApplyLeave: {
-                    part: [
-                        {
-                            required: true,
-                            message: "请选择部门",
-                            trigger: "change"
-                        }
-                    ],
-                    post: [
-                        {
-                            required: true,
-                            message: "请选择职务",
-                            trigger: "change"
-                        }
-                    ],
+                    // part: [
+                    //     {
+                    //         required: true,
+                    //         message: "请选择部门",
+                    //         trigger: "change"
+                    //     }
+                    // ],
+                    // post: [
+                    //     {
+                    //         required: true,
+                    //         message: "请选择职务",
+                    //         trigger: "change"
+                    //     }
+                    // ],
                     type: [
                         {
                             required: true,
@@ -154,7 +183,7 @@
                     reason: [
                         {
                             required: true,
-                            message: "请填写晋升理由",
+                            message: "请填写请假理由",
                             trigger: "blur"
                         }
                     ]
@@ -174,8 +203,8 @@
 
                         let newApplyLeave = {
                             proveFile: this.applyLeave.proveFile,
-                            part: this.applyLeave.part,
-                            post: this.applyLeave.post,
+                            // part: this.applyLeave.part,
+                            // post: this.applyLeave.post,
                             type: this.applyLeave.type,
                             days: this.applyLeave.days,
                             reason: this.applyLeave.reason,

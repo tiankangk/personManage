@@ -2,9 +2,14 @@
     <div>
         <Modal v-model="model.isPreviewPic" title="浏览照片">
             <Row :gutter="16">
-                <Col class="bottom-distance"  v-for="(pic,ind) in previewPicList" :key="ind" span="12">
+                <Col
+                    class="bottom-distance"
+                    v-for="(pic,ind) in previewPicList"
+                    :key="ind"
+                    span="12"
+                >
                     <Card class="card-container">
-                        <img class="pic" :src="pic" alt="">
+                        <img class="pic" :src="pic" alt>
                     </Card>
                 </Col>
             </Row>
@@ -18,14 +23,14 @@
 <script>
     export default {
         name: "previewPic",
-        props:{
-            model:{
-                type:Object,
-                required:true
+        props: {
+            model: {
+                type: Object,
+                required: true
             },
-            previewPicList:{
-                type:Array,
-                require:true
+            previewPicList: {
+                type: Array,
+                require: true
             }
         }
     };
@@ -33,11 +38,10 @@
 
 <style lang="less" scoped>
 .card-container {
-    height:200px;
 }
 .pic {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 200px;
 }
 .bottom-distance {
     margin-bottom: 10px;

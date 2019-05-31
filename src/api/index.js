@@ -119,6 +119,83 @@ export const changeCompanyStauts = (params) =>{
 export const getSelectCompanyInfor = (params) =>{
     return axios.post(baseURL + 'getSelectCompanyInfor',params).then(res => res.data);
 }
+// 获取下拉选项子分类的信息
+export const getSelectChildInfor = (params) =>{
+    return axios.post(baseURL + 'getSelectChildInfor',params).then(res => res.data);
+}
+// 获取下拉选的所有职务的信息
+export const getAllJob = () =>{
+    return axios.get(baseURL + 'getAllJob').then(res => res.data);
+}
+// 添加资产的分类
+export const addAssetClassify = (params) =>{
+    return axios.post(baseURL + 'addAssetClassify',params).then(res => res.data);
+}
+// 改变资产分类的启用和禁用的状态
+export const changeClassifyStauts = (params) =>{
+    return axios.post(baseURL + 'changeClassifyStauts',params).then(res => res.data);
+}
+// 添加资产下面的多级名称
+export const addAssetName = (params) =>{
+    return axios.post(baseURL + 'addAssetName',params).then(res => res.data);
+}
+// 添加资产配置信息
+export const addAssetConfig = (params) =>{
+    return axios.post(baseURL + 'addAssetConfig',params).then(res => res.data);
+}
+
+// // 获取分类下面的配置的信息
+// export const getAssetConfigInfo = (params) =>{
+//     return axios.post(baseURL + 'getAssetConfigInfo',params).then(res => res.data);
+// }
+// 改变资产配置管理的启用和禁用的状态
+export const changeConfigStauts = (params) =>{
+    return axios.post(baseURL + 'changeConfigStauts',params).then(res => res.data);
+}
+
+// 获取资产的分类信息
+export const getAssetClassifyInfo = () =>{
+    return axios.get(baseURL + 'getAssetClassifyInfo').then(res => res.data);
+}
+// 获取资产下面的多级名称
+export const getAssetNameInfo = (params) =>{
+    return axios.post(baseURL + 'getAssetNameInfo',params).then(res => res.data);
+}
+// 获取资产下面的一级名称的配置
+export const getAssetConfigInfo = (params) =>{
+    return axios.post(baseURL + 'getAssetConfigInfo',params).then(res => res.data);
+}
+
+// 改变资产分类的启用和禁用的状态
+export const changeAssetNameStauts = (params) =>{
+    return axios.post(baseURL + 'changeAssetNameStauts',params).then(res => res.data);
+}
+// 获取资产的分类的下拉框的信息
+export const getSelectAssetClassifyInfo = () =>{
+    return axios.get(baseURL + 'getSelectAssetClassifyInfo').then(res => res.data);
+}
+// 获取资产的分类的资产名称信息
+export const getSelectAssetName = (params) =>{
+    return axios.post(baseURL + 'getSelectAssetName',params).then(res => res.data);
+}
+
+// 添加资产信息
+export const addAssetInfo = (params) =>{
+    return axios.post(baseURL + 'addAssetInfo',params).then(res => res.data);
+}
+// 获取资产信息
+export const getAssetInfo = (params) =>{
+    return axios.post(baseURL + 'getAssetInfo',params).then(res => res.data);
+}
+
+ // 获取一级名称的信息
+ export const getFirstLevelInfo = (params) =>{
+    return axios.post(baseURL + 'getFirstLevelInfo',params).then(res => res.data);
+}
+
+
+
+
 
 
 

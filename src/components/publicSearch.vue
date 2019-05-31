@@ -1,7 +1,7 @@
 
 <template>
-    <Form class="public-search" @submit.native.prevent  inline>
-        <FormItem  v-for="(item,ind) in searchList" :key="ind">
+    <Form class="public-search" @submit.native.prevent inline>
+        <FormItem v-for="(item,ind) in searchList" :key="ind">
             <Input
                 @keyup.enter.native="handleSearch"
                 :style="{width:item.width?item.width:'180px'}"
@@ -28,14 +28,23 @@
             </Select>
             <DatePicker
                 @keyup.enter.native="handleSearch"
-              :style="{width:item.width?item.width:'180px'}"
+                :style="{width:item.width?item.width:'180px'}"
                 format="yyyy-MM-dd"
                 v-model="item.val"
-                v-else
+                v-else-if="item.type==='selectTime'"
                 type="daterange"
                 placement="bottom-end"
                 placeholder="请选择查询日期"
             ></DatePicker>
+            <Cascader
+                v-else
+                @keyup.enter.native="handleSearch"
+                :style="{width:item.width?item.width:'180px'}"
+                v-model="item.val"
+                :data="options"
+                :placeholder="'请输入'+item.title"
+                change-on-select
+            ></Cascader>
         </FormItem>
         <FormItem>
             <Button type="primary" @click="handleSearch">搜索</Button>
@@ -44,6 +53,8 @@
 </template>
 
 <script>
+import {getAllJob} from 'api'
+import { getFormat } from "@/public/tools";
     export default {
         name: "publicSearch",
         props: {
@@ -53,14 +64,22 @@
             }
         },
         data() {
-            return {};
+            return {
+                options: []
+            };
         },
         methods: {
-            
             // 搜索
             handleSearch() {
                 this.$emit("handleSearch");
             }
+        },
+        mounted(){
+            getAllJob().then(res =>{
+                console.log('job',res);
+                this.options = getFormat(res.result,4)
+                console.log('options',this.options);
+            });
         }
     };
 </script>

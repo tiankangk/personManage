@@ -9,31 +9,66 @@
             inline
         >
             <FormItem prop="company" label="公司">
-                <Select v-model="userInfo.company" placeholder="请选择入职公司">
-                    <Option v-for="company in companyList" :key ="company.id" :value="company.id">{{company.name}}</Option>
-                </Select>
+                <Cascader
+                    v-model="userInfo.company"
+                    @on-change="handleChangeCompany"
+                    :data="companyList"
+                    :placeholder="userInfo.companyName"
+                    change-on-select
+                ></Cascader>
+                <!-- <Select
+                    v-model="userInfo.company"
+                    @on-change="handleChangeCompany(userInfo.company)"
+                    placeholder="请选择入职公司"
+                >
+                    <Option
+                        v-for="company in companyList"
+                        :key="company.id"
+                        :value="company.id"
+                    >{{company.name}}</Option>
+                </Select>-->
             </FormItem>
             <FormItem prop="part" label="部门">
-                <Select v-model="userInfo.part" placeholder="请选择部门">
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
-                </Select>
+                <Cascader
+                    v-model="userInfo.part"
+                     :placeholder="userInfo.partName"
+                    @on-change="handleChangeCompany"
+                    :data="partList"
+                    change-on-select
+                ></Cascader>
+                <!-- <Select
+                    v-model="userInfo.part"
+                    @on-change="handleChangeCompany(userInfo.part)"
+                    placeholder="请选择部门"
+                >
+                    <Option v-for="part in partList" :key="part.id" :value="part.id">{{part.name}}</Option>
+                </Select>-->
             </FormItem>
             <FormItem prop="post" label="岗位">
-                <Select v-model="userInfo.post" placeholder="请选择岗位">
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
-                </Select>
+                <Cascader
+                    v-model="userInfo.post"
+                     :placeholder="userInfo.postName"
+                    :data="postList"
+                      @on-change="handleChangeCompany"
+                    change-on-select
+                ></Cascader>
+                <!-- <Select v-model="userInfo.post" placeholder="请选择岗位">
+                    <Option v-for="job in jobList" :key="job.id" :value="job.id">{{job.name}}</Option>
+                </Select>-->
             </FormItem>
 
             <FormItem prop="job" label="职务">
-                <Select v-model="userInfo.job" placeholder="请选择职务">
+                 <Cascader
+                    v-model="userInfo.job"
+                      :placeholder="userInfo.jobName"
+                    :data="jobList"
+                    change-on-select
+                ></Cascader>
+                <!-- <Select v-model="userInfo.job" placeholder="请选择职务">
                     <Option value="beijing">New York</Option>
                     <Option value="shanghai">London</Option>
                     <Option value="shenzhen">Sydney</Option>
-                </Select>
+                </Select> -->
             </FormItem>
             <FormItem class="upload-regist-photo">
                 <div class="regist-photo-container">
@@ -223,9 +258,10 @@
 </template>
 
 <script>
-import {getSelectCompanyInfor} from 'api'
+    import { getSelectCompanyInfor, getSelectChildInfor } from "api";
     import { provinceAndCityData } from "element-china-area-data";
     import nationList from "./nation.js";
+    import {getFormat} from "@/public/tools.js"
     export default {
         name: "userInfo",
         props: {
@@ -234,9 +270,11 @@ import {getSelectCompanyInfor} from 'api'
                 required: true
             }
         },
-        computed:{
-            getRegistPhotoPic(){
-                return this.registPhotoPic?this.registPhotoPic:this.userInfo.registPhoto
+        computed: {
+            getRegistPhotoPic() {
+                return this.registPhotoPic
+                    ? this.registPhotoPic
+                    : this.userInfo.registPhoto;
             }
         },
         data() {
@@ -299,7 +337,7 @@ import {getSelectCompanyInfor} from 'api'
             const validateWeight = (rule, value, callback) => {
                 let reg = /^([1-9][0-9]*)+(\.[0-9]{1,2})?$/;
                 if (value === "") {
-                    callback(new Error("请输入体重"));
+                    callback(new Error("内容不能为空"));
                 } else {
                     if (!reg.test(value)) {
                         callback(new Error("格式不正确"));
@@ -308,7 +346,10 @@ import {getSelectCompanyInfor} from 'api'
                 }
             };
             return {
-                companyList:[],
+                companyList: [],
+                partList: [],
+                postList: [],
+                jobList:[],
                 identityCardPic: "",
                 registPhotoPic: "",
                 isIdentityCardModal: false,
@@ -463,8 +504,8 @@ import {getSelectCompanyInfor} from 'api'
 
                     wageCrrection: [
                         {
-                            required: true,
-                            message: "请输入转正工资",
+                            validator: validateWeight,
+                            // message: "请输入转正工资",
                             trigger: "blur"
                         }
                     ],
@@ -485,6 +526,7 @@ import {getSelectCompanyInfor} from 'api'
                     company: [
                         {
                             required: true,
+                            type: "array",
                             message: "请选择入职公司",
                             trigger: "change"
                         }
@@ -492,6 +534,7 @@ import {getSelectCompanyInfor} from 'api'
                     part: [
                         {
                             required: true,
+                            type: "array",
                             message: "请选择部门",
                             trigger: "change"
                         }
@@ -499,6 +542,7 @@ import {getSelectCompanyInfor} from 'api'
                     post: [
                         {
                             required: true,
+                            type: "array",
                             message: "请选择岗位",
                             trigger: "change"
                         }
@@ -506,6 +550,7 @@ import {getSelectCompanyInfor} from 'api'
                     job: [
                         {
                             required: true,
+                             type: "array",
                             message: "请选择职务",
                             trigger: "change"
                         }
@@ -514,6 +559,27 @@ import {getSelectCompanyInfor} from 'api'
             };
         },
         methods: {
+            // 下拉选择公司
+            handleChangeCompany(idList) {
+                console.log("idList", idList);
+                getSelectChildInfor({ id: idList[idList.length - 1] }).then(res => {
+                    console.log(res);
+                    if (0 in res.result) {
+                        if (res.result[0].type == 2) {
+                            this.partList = getFormat(res.result,2);
+                            this.userInfo.part = [];
+                             this.userInfo.post = [];
+                        } else if (res.result[0].type == 3) {
+                            this.postList = getFormat(res.result,3);
+                              this.userInfo.post = [];
+                               this.userInfo.job = [];
+                        }else if (res.result[0].type == 4) {
+                            this.jobList = getFormat(res.result,4);
+                              this.userInfo.job = [];
+                        }
+                    }
+                });
+            },
             handleView(url) {
                 // if(url && !this.identityCardPic){
                 this.identityCardPic = url ? url : this.userInfo.identityCardName;
@@ -548,10 +614,15 @@ import {getSelectCompanyInfor} from 'api'
                 // this.$set(this.userInfo, "registPhotoName", file.name);
                 // this.userInfo.registPhotoName = file.name;
             },
-            getCompanyInfor(){
-                getSelectCompanyInfor({type:1}).then(res=>{
-                    console.log(res);
-                    this.companyList = res.result;
+
+           
+            // 获取下拉框的公司的信息
+            getCompanyInfor() {
+                getSelectCompanyInfor({ type: 1 }).then(res => {
+                    if (0 in res.result) {
+                        console.log(res.result);
+                        this.companyList = getFormat(res.result,1);
+                    }
                 });
             }
         },

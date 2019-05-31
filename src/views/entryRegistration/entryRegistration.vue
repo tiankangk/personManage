@@ -94,10 +94,10 @@
                 },
 
                 userInfo: {
-                    company: "",
-                    part: "",
-                    post: "",
-                    job: "",
+                    company: [],
+                    part: [],
+                    post: [],
+                    job: [],
                     username: "",
                     sex: "",
                     birth: "",

@@ -80,7 +80,7 @@
                 </Header>
                 <tags-nav :getMenuList="getMenuList"></tags-nav>
                 <Content
-                    :style="{margin:'10px',padding: '10px', background: '#fff',maxHeight:'90%',overflowY:'scroll'}"
+                    :style="{margin:'10px',padding: '10px', background: '#fff',height:'90%',overflowY:'scroll'}"
                 >
                     <keep-alive v-if="isRouterAlive">
                         <router-view />

@@ -34,10 +34,16 @@ import {
     Divider,
     Row,
     Col,
-    Badge
+    Badge,
+    Cascader,
+    Tabs,
+    TabPane
 } from 'iview'
 import 'iview/dist/styles/iview.css';
 
+Vue.component('Tabs', Tabs);
+Vue.component('TabPane', TabPane);
+Vue.component('Cascader', Cascader);
 Vue.component('Badge', Badge);
 Vue.component('Col', Col);
 Vue.component('Row', Row);

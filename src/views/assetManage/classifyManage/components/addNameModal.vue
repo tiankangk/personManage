@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Modal v-model="modal.isAddCompany" @on-visible-change="modalChange" title="添加分类">
+        <Modal v-model="modal.isAddCompany" @on-visible-change="modalChange" title="添加资料名称">
             <Form ref="companyInfo" :rules="ruleCompanyInfo" :model="companyInfo" :label-width="80">
                 <FormItem v-if="parantInfo.name" label="父级的名称">
                     <Input :value="parantInfo.name" disabled></Input>
@@ -8,7 +8,7 @@
                 <FormItem label="名称" prop="companyName">
                     <Input v-model="companyInfo.companyName" placeholder="请填写名称"></Input>
                 </FormItem>
-                <FormItem prop="category" label="类型">
+                <!-- <FormItem prop="category" label="类型">
                     <Select v-model="companyInfo.category" placeholder="请选择类型">
                         <Option
                             v-for="category in categoryList"
@@ -16,7 +16,7 @@
                             :value="category.value"
                         >{{category.label}}</Option>
                     </Select>
-                </FormItem>
+                </FormItem> -->
             </Form>
 
             <div slot="footer">
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-    import { addcompany } from "api";
+    import { addAssetName } from "api";
     export default {
-        name: "addCompanyModal",
+        name: "addClassifyModal",
         inject: ["reload"],
         props: {
             modal: {
@@ -40,13 +40,17 @@
             parantInfo: {
                 type: Object,
                 required: true
+            },
+            chooseClassifyVal:{
+                type: Object,
+                required: true
             }
         },
         data() {
             return {
                 companyInfo: {
                     companyName: "",
-                    category: ''
+                    // category: ''
                 },
                 ruleCompanyInfo: {
                     companyName: [
@@ -56,33 +60,25 @@
                             trigger: "blur"
                         }
                     ],
-                    category: [
-                        {
-                            required: true,
-                            type: "number",
-                            message: "请选择类型",
-                            trigger: "change"
-                        }
-                    ]
+                    // category: [
+                    //     {
+                    //         required: true,
+                    //         type: "number",
+                    //         message: "请选择类型",
+                    //         trigger: "change"
+                    //     }
+                    // ]
                 },
-                categoryList: [
-                    {
-                        value: 1,
-                        label: "公司"
-                    },
-                    {
-                        value: 2,
-                        label: "部门"
-                    },
-                    {
-                        value: 3,
-                        label: "岗位"
-                    },
-                    {
-                        value: 4,
-                        label: "职务"
-                    }
-                ]
+                // categoryList: [
+                //     {
+                //         value: 1,
+                //         label: "资产分类"
+                //     },
+                //     {
+                //         value: 2,
+                //         label: "资料名称"
+                //     }
+                // ]
             };
         },
         methods: {
@@ -103,14 +99,16 @@
             handelSubmit(name) {
                 this.$refs[name].validate(valid => {
                     if (valid) {
-                        addcompany({
+                        addAssetName({
                             name: this.companyInfo.companyName,
-                            category:this.companyInfo.category,
+                            // category:this.companyInfo.category,
+                            chooseClassifyVal:this.chooseClassifyVal,
                             parantInfo: this.parantInfo
                         }).then(res => {
                             console.log(res);
                             if (res.success) {
-                                this.reload();
+                                // this.reload();
+                                this.$emit('updateAssetName');
                                 this.modal.isAddCompany = false;
                                 this.$Message.success("提交成功");
                             } else {

@@ -17,7 +17,7 @@
                 </Dropdown>
             </div>
         </Card>
-        <public-table class="puclic-table" :tableList="tableList" @changePage="changePage"></public-table>
+        <public-table :loading="loading" class="puclic-table" :tableList="tableList" @changePage="changePage"></public-table>
         <!-- 编辑人事管理 -->
         <add-person-model :model="model" :chooseVal="chooseVal" :allEntryInfo="allEntryInfo"></add-person-model>
         <!-- 预览证件照片 -->
@@ -63,6 +63,7 @@
         },
         data() {
             return {
+                loading:false,
                 // 浏览证件照的数组
                 previewPicList: [],
                 chooseVal: {},
@@ -81,19 +82,9 @@
                         val: ""
                     },
                     part: {
-                        title: "部门",
-                        type: "select",
-                        val: "",
-                        options: [
-                            {
-                                value: "New York",
-                                label: "New York"
-                            },
-                            {
-                                value: "London",
-                                label: "London"
-                            }
-                        ]
+                        title: "职务",
+                        type: "cascader",
+                        val: []
                     },
                     idNum: {
                         title: "身份证号",
@@ -161,10 +152,10 @@
                     },
 
                     userInfo: {
-                        company: "",
-                        part: "",
-                        post: "",
-                        job: "",
+                        company: [],
+                        part: [],
+                        post: [],
+                        job: [],
                         username: "",
                         sex: "",
                         birth: "",
@@ -246,7 +237,7 @@
                         },
                         {
                             title: "部门",
-                            key: "part"
+                            key: "partName"
                         },
                         {
                             title: "手机号",
@@ -372,12 +363,14 @@
                 } else {
                     newSearchList.entryTime = "";
                 }
+                this.loading = true;
                 getEntryRegistrationInfo({
                     pageIndex: this.tableList.index,
                     pageSize: this.tableList.pageSize,
                     searchList: newSearchList
                 }).then(res => {
                     console.log(res);
+                      this.loading = false;
                     this.tableList.contentList = res.result;
                     this.tableList.total = res.total;
                 });
@@ -389,6 +382,10 @@
                     this.model.isModel = true;
                     this.allEntryInfo.userInfo = res.userInfo;
                     console.log("userInfo", this.allEntryInfo.userInfo);
+                     this.allEntryInfo.userInfo.company = res.userInfo.company.split(',');
+                      this.allEntryInfo.userInfo.part = res.userInfo.part.split(',');
+                       this.allEntryInfo.userInfo.post = res.userInfo.post.split(',');
+                        this.allEntryInfo.userInfo.job = res.userInfo.job.split(',');
                     this.allEntryInfo.userInfo.identityCardName =
                         res.userInfo.identityCard;
                     this.allEntryInfo.userInfo.registPhotoName =

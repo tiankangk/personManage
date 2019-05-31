@@ -19,10 +19,12 @@
     import addCompanyModal from "./components/addCompanyModal";
     import { getCompanyInfo, changeCompanyStauts } from "api";
     export default {
+        name:'partManage',
         components: {
             treeTable,
             addCompanyModal
         },
+        inject:['reload'],
         methods: {
             edit(row) {
                 // console.log("row", row);

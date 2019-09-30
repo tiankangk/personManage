@@ -38,12 +38,12 @@
             }
         },
         computed: {
-            ...mapGetters(["getUsername"])
+            ...mapGetters(["getUsername","getUserId"])
         },
         data() {
             return {
                 userInfor: {
-                    userId: localStorage.getItem("userId"),
+                    userId: '',
                     oldPasswd: "",
                     newPasswd: ""
                 },
@@ -67,6 +67,9 @@
                 }
             };
         },
+        created(){
+            this.userInfor.userId = this.getUserId;
+        },
         methods: {
             handleSubmitForm(name) {
                 this.$refs[name].validate(valid => {
@@ -79,9 +82,9 @@
                                     title: "提示",
                                     content: "修改成功，您将重新登录",
                                     onOk: () => {
-                                        localStorage.removeItem("mc");
-                                        localStorage.removeItem("userId");
-                                        localStorage.removeItem("username");
+                                        sessionStorage.removeItem("mc");
+                                        sessionStorage.removeItem("userId");
+                                        sessionStorage.removeItem("username");
                                         this.$router.push("/login");
                                     }
                                 });

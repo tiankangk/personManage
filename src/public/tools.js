@@ -8,6 +8,8 @@ export const transformTime = (time) => {
     return `${y}-${m < 10 ? "0" + m : m}-${d < 10 ? "0" + d : d}`;
 }
 
+
+
 // 格式化多级公司，部门或岗位
 class GetFormat {
     // 通过type对获取的初始化的值分类

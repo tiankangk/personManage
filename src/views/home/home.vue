@@ -21,7 +21,8 @@
                     >
                         <Submenu v-for="item in getMenuList" :key="item.name" :name="item.name">
                             <template slot="title">
-                                <Icon :type="item.meta.icon"></Icon>
+                                <!-- <Icon :type="item.meta.icon"></Icon> -->
+                                <span :class="['iconfont',item.meta.icon]"></span>
                                 {{item.meta.title}}
                             </template>
                             <MenuItem
@@ -43,7 +44,8 @@
                         placement="right"
                     >
                         <a class="dropdown-color" href="javascript:void(0)">
-                            <Icon :type="item.meta.icon"></Icon>
+                            <!-- <Icon :type="item.meta.icon"></Icon> -->
+                            <span style="font-size:30px;" :class="['iconfont',item.meta.icon]"></span>
                         </a>
                         <DropdownMenu slot="list">
                             <DropdownItem
@@ -147,9 +149,9 @@
             },
             loginOut() {
                 console.log("clear");
-                localStorage.removeItem("mc");
-                localStorage.removeItem("userId");
-                localStorage.removeItem("username");
+                sessionStorage.removeItem("mc");
+                sessionStorage.removeItem("userId");
+                sessionStorage.removeItem("username");
                 this.$router.push("/login");
             },
             collapsedSider() {

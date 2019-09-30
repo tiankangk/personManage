@@ -127,6 +127,11 @@ export const getSelectChildInfor = (params) =>{
 export const getAllJob = () =>{
     return axios.get(baseURL + 'getAllJob').then(res => res.data);
 }
+
+/**
+ * 
+ * 资产管理 
+ */
 // 添加资产的分类
 export const addAssetClassify = (params) =>{
     return axios.post(baseURL + 'addAssetClassify',params).then(res => res.data);
@@ -143,6 +148,13 @@ export const addAssetName = (params) =>{
 export const addAssetConfig = (params) =>{
     return axios.post(baseURL + 'addAssetConfig',params).then(res => res.data);
 }
+
+// 获取所有员工的部门等信息
+export const getAllStaffInfo = () =>{
+    return axios.get(baseURL + 'getAllStaffInfo').then(res => res.data);
+}
+
+
 
 // // 获取分类下面的配置的信息
 // export const getAssetConfigInfo = (params) =>{
@@ -192,6 +204,39 @@ export const getAssetInfo = (params) =>{
  export const getFirstLevelInfo = (params) =>{
     return axios.post(baseURL + 'getFirstLevelInfo',params).then(res => res.data);
 }
+
+// 资产申领
+
+export const addGetAsset = (params) =>{
+    return axios.post(baseURL + 'addGetAsset',params).then(res => res.data);
+}
+
+/**
+ * 资产申领
+ */
+export const getAssetClaimInfo = (params) =>{
+    return axios.post(baseURL + 'getAssetClaimInfo',params).then(res => res.data);
+}
+// 归还资产
+export const returnAssets = (params) =>{
+    return axios.post(baseURL + 'returnAssets',params).then(res => res.data);
+}
+
+/**
+ * 资产报损
+ *  */
+
+//  报损资产
+export const harmGetAsset = (params) =>{
+    return axios.post(baseURL + 'harmGetAsset',params).then(res => res.data);
+}
+
+
+//  获取报损资产的信息
+export const getHarmAssetInfo = (params) =>{
+    return axios.post(baseURL + 'getHarmAssetInfo',params).then(res => res.data);
+}
+
 
 
 

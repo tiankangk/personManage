@@ -17,7 +17,8 @@ const router = new Router({
             redirect: '/entryRegistration',
             meta: {
                 title: '入职登记',
-                icon: 'ios-clipboard-outline'
+                icon: 'icon-register'
+                // icon: 'ios-clipboard-outline'
             },
             component: Home,
             children: [
@@ -46,7 +47,9 @@ const router = new Router({
             name: 'auditsManage',
             meta: {
                 title: '审核管理',
-                icon: 'ios-clipboard-outline'
+                icon: 'icon-comment-verify'
+                // icon: 'ios-clipboard-outline'
+                
             },
             component: Home,
             children: [
@@ -104,7 +107,8 @@ const router = new Router({
             name: 'assetManage',
             meta: {
                 title: '资产管理',
-                icon: 'ios-clipboard-outline'
+                icon: 'icon-Assets'
+                // icon: 'ios-clipboard-outline'
             },
             component: Home,
             children: [
@@ -125,6 +129,24 @@ const router = new Router({
                         isHide: true
                     },
                     component: () => import('views/assetManage/classifyManage/classifyManage')
+                },
+                {
+                    path: 'getAsset',
+                    name: 'getAsset',
+                    meta: {
+                        title: '资产申领管理',
+                        isHide: true
+                    },
+                    component: () => import('views/getAsset/getAsset')
+                },
+                {
+                    path: 'harmAsset',
+                    name: 'harmAsset',
+                    meta: {
+                        title: '资产报损管理',
+                        isHide: true
+                    },
+                    component: () => import('views/harmAsset/harmAsset')
                 }
             ]
         },
@@ -133,7 +155,8 @@ const router = new Router({
             name: 'partManage',
             meta: {
                 title: '部门管理',
-                icon: 'ios-clipboard-outline'
+                icon: 'icon-department'
+                // icon: 'ios-clipboard-outline'
             },
             component: Home,
             children: [
@@ -153,7 +176,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-    let username = localStorage.getItem('userId');
+    let username = sessionStorage.getItem('rsuserId');
     console.log(username);
     if (username) {
         next();

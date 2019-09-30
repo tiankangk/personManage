@@ -3,16 +3,34 @@
         <Card>
             <div class="header-content">
                 <asset-search @handleSearch="handleSearch" :searchList="searchList"></asset-search>
-                <Button @click="handleAddAsset" type="primary">添加资产</Button>
+                <div>
+                    <Dropdown style="margin-left: 20px" @on-click="chooseAssetAction">
+                        <Button type="primary">
+                            资产操作
+                            <Icon type="ios-arrow-down"></Icon>
+                        </Button>
+                        <DropdownMenu slot="list">
+                            <DropdownItem name="isGetAsset">资产申领</DropdownItem>
+                            <DropdownItem name="isHarm">资产报损</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                    <Button @click="handleAddAsset" type="primary">添加资产</Button>
+                </div>
             </div>
         </Card>
         <public-table
             :loading="loading"
             class="puclic-table"
             :tableList="tableList"
+            @handleSelect="handleSelect"
             @changePage="changePage"
         ></public-table>
+        <!-- 添加资产弹框 -->
         <add-asset-modal :modal="modal" :addAsset="addAsset" :invoiceInfo="invoiceInfo"></add-asset-modal>
+        <!-- 资产申领弹框 -->
+        <get-asset-modal :modal="modal" :chooseAssetList="chooseAssetList"></get-asset-modal>
+        <!-- 资产报损弹框 -->
+        <harm-asset-modal :modal="modal" :chooseAssetList="chooseAssetList"></harm-asset-modal>
     </div>
 </template>
 
@@ -20,6 +38,8 @@
     import assetSearch from "./components/assetSearch";
     import publicTable from "components/publicTable";
     import addAssetModal from "./components/addAssetModal";
+    import getAssetModal from "./components/getAssetModal";
+    import harmAssetModal from "./components/harmAssetModal";
     import { getAssetInfo } from "api";
     import { transformTime } from "@/public/tools";
     export default {
@@ -27,15 +47,20 @@
         components: {
             assetSearch,
             publicTable,
-            addAssetModal
+            addAssetModal,
+            getAssetModal,
+            harmAssetModal
         },
         data() {
             return {
                 loading: false,
                 userInfo: {},
                 modal: {
-                    isAddModal: false
+                    isAddModal: false,
+                    isGetAsset: false,
+                    isHarmAsset: false
                 },
+                chooseAssetList: [],
                 searchList: {
                     classify: "",
                     assetName: []
@@ -83,6 +108,11 @@
                     pageSize: 10,
                     contentList: [],
                     titleList: [
+                        {
+                            type: "selection",
+                            width: 60,
+                            align: "center"
+                        },
                         {
                             title: "资产编码",
                             key: "id"
@@ -139,7 +169,7 @@
                                                     newAddAsset.assetName = newAddAsset.assetName.split(
                                                         ","
                                                     );
-                                                    newAddAsset.action = 'edit';
+                                                    newAddAsset.action = "edit";
                                                     this.invoiceInfo.invoiceName =
                                                         newAddAsset.invoiceUrl ||
                                                         "";
@@ -161,9 +191,18 @@
             };
         },
         methods: {
+            // table多选值
+            handleSelect(list) {
+                this.chooseAssetList = list;
+                this.chooseAssetList.forEach(item => {
+                    this.$set(item, "SL", "");
+                    this.$set(item, "BZ", "");
+                });
+                console.log("chooseAssetList", this.chooseAssetList);
+            },
             // 添加资产
             handleAddAsset() {
-                this.addAsset.action = 'add';
+                this.addAsset.action = "add";
                 this.modal.isAddModal = true;
             },
             // 搜索
@@ -176,7 +215,20 @@
                 // this.tableList.index = page;
                 this.initData();
             },
-
+            // 资产操作
+            chooseAssetAction(val) {
+                if (0 in this.chooseAssetList) {
+                    if (val === "isGetAsset") {
+                        // 资产申领
+                        this.modal.isGetAsset = true;
+                    } else if (val === "isHarm") {
+                        // 资产报损
+                        this.modal.isHarmAsset = true;
+                    }
+                } else {
+                    this.$Message.warning("请选择资产");
+                }
+            },
             initData() {
                 this.loading = true;
                 getAssetInfo({

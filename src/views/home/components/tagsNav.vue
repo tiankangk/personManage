@@ -84,7 +84,7 @@
         },
         computed: {},
         mounted() {
-            let getList = localStorage.getItem("personList");
+            let getList = sessionStorage.getItem("personList");
             if (getList) {
                 this.list = JSON.parse(getList);
             } else {
@@ -204,7 +204,7 @@
         },
         watch: {
             list() {
-                localStorage.setItem("personList", JSON.stringify(this.list));
+                sessionStorage.setItem("personList", JSON.stringify(this.list));
             },
             $route(to) {
                 if (this.judgePath(to.name)) {

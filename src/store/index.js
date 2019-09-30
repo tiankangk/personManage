@@ -16,8 +16,8 @@ const mutations = {
         console.log(userInfo);
         state.username = userInfo.mc;
         state.userId = userInfo.id;
-        localStorage.setItem('username', userInfo.mc);
-        localStorage.setItem('userId', userInfo.id);
+        sessionStorage.setItem('rsusername', userInfo.mc);
+        sessionStorage.setItem('rsuserId', userInfo.id);
     },
     setCountList(state){
         getUnAuditCount().then(res => {
@@ -28,8 +28,8 @@ const mutations = {
 }
 
 const getters = {
-    getUsername: () => localStorage.getItem('username'),
-    getUserId: () => localStorage.getItem('userId'),
+    getUsername: () => sessionStorage.getItem('rsusername'),
+    getUserId: () => sessionStorage.getItem('rsuserId'),
     getMenuList: () => router.options.routes.filter(item => ( item.path !== '/login' )),
     getCountList:(state) => state.countList
 }

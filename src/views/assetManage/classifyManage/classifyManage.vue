@@ -14,7 +14,7 @@
                         >
                             <span>{{item.name}}</span>
                             <div>
-                                <Icon @click="handleEditClassify(item)" type="md-create"/>
+                                <Icon @click="handleEditClassify(item)" type="md-create" />
                                 <Icon
                                     @click="handleChangeClassifyStauts(item)"
                                     style="margin-left:5px;"
@@ -29,7 +29,7 @@
                 <Tabs :animated="false" value="name1">
                     <TabPane label="资料名称管理" name="name1">
                         <div class="add-container">
-                            <Icon class="add-icon" @click="handleAddCompany" type="md-add-circle"/>
+                            <Icon class="add-icon" @click="handleAddCompany" type="md-add-circle" />
                         </div>
                         <tree-table
                             :data="data"
@@ -265,7 +265,7 @@
                 this.initAssetName();
             },
             // 选择要配资的资产的名称
-            handleChooseName(){
+            handleChooseName() {
                 this.initConfig();
             },
             // 添加子分类
@@ -398,6 +398,7 @@
             },
             // 初始化分类下的多级名称的信息
             initAssetName() {
+                console.log("chooseClassifyVal", this.chooseClassifyVal);
                 getAssetNameInfo(this.chooseClassifyVal).then(res => {
                     if (0 in res.result) {
                         let levelList = this.classifyList(res.result);
@@ -446,12 +447,13 @@
             // 初始化分类信息
             initData() {
                 getAssetClassifyInfo().then(res => {
-                    console.log(res);
                     this.classifyInfoList = res.result;
-                    this.chooseClassifyVal = res.result[0];
-                    this.initAssetName();
-                    this.initConfig();
-                    this.initFirstLevelInfo();
+                    if (0 in res.result) {
+                        this.chooseClassifyVal = res.result[0];
+                        this.initAssetName();
+                        this.initConfig();
+                        this.initFirstLevelInfo();
+                    }
                 });
             },
             initConfig() {

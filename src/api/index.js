@@ -4,7 +4,8 @@ let baseURL = '';
 if(process.env.NODE_ENV === 'development'){
     baseURL = 'http://localhost:3001/' 
 } else {
-    baseURL = `http://192.168.0.38:3001/`
+     baseURL = `http://120.202.175.16:3001/`
+    // baseURL = `http://192.168.0.38:3001/`
 }
 
 /**
